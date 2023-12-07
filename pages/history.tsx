@@ -30,8 +30,11 @@ function History() {
     if (typeof window !== "undefined") {
       // Retrieve data from local storage
       const storedDataString = localStorage.getItem("rk-transactions") || "";
-      const parsedStoredData = JSON.parse(storedDataString);
-      setStoredData(parsedStoredData);
+
+      if (storedDataString) {
+        const parsedStoredData = JSON.parse(storedDataString);
+        setStoredData(parsedStoredData);
+      }
     }
   }, []);
 
