@@ -20,6 +20,20 @@ import polygon from "../../assets/polygon-token.png";
 import eth from "../../assets/ethereum.png";
 
 function Card() {
+  const [hash, setHash] = useState<string>();
+
+  // const { data, isError, isLoading } = useWaitForTransaction({
+  //   hash: `0x${hash?.replace("0x", "")}`,
+  // });
+
+  // const Confirmation = async (hash: string) => {
+  //   setHash(hash);
+  //   if(data){
+  //     return data
+  //   }
+
+  // };
+
   const [icon, setIcon] = useState<StaticImageData>();
   const [balance, setBalance] = useState<string>();
   const [loading, setloading] = useState<boolean>(false);
@@ -30,6 +44,8 @@ function Card() {
   const { isConnected } = useAccount();
   const { address } = useAccount();
   const addRecentTransaction = useAddRecentTransaction();
+
+  const currency = network.chain?.nativeCurrency.symbol;
 
   const getBalance = async () => {
     const Balance = await fetchBalance({
@@ -57,7 +73,7 @@ function Card() {
     if (isConnected) {
       fetcher();
     }
-  }, [isConnected, network.chain?.id]);
+  }, [isConnected, network.chain?.id, hash ]);
 
   // ######################################################################
   // ######################### Send Transaction ###########################
@@ -79,12 +95,17 @@ function Card() {
 
             const { hash } = await sendTransaction(request);
 
-            setloading(false);
-            addRecentTransaction({
-              hash: hash,
-              description: "SENT",
-            });
-            console.log(hash);
+          //  const res = await Confirmation(hash);
+
+          //  console.log(res?.status)
+
+              toast.success("Transation Successful");
+              setloading(false);
+              addRecentTransaction({
+                hash: hash,
+                description: `SENT (${form.value} ${currency})`,
+              });
+
           } else {
             toast.error("Insufficient balance");
             setloading(false);
@@ -108,7 +129,6 @@ function Card() {
       [e.target.name]: e.target.value,
     }));
   };
-
 
   return (
     <div className="w-[550px] h-[390px] border rounded-3xl bg-[#ffffff] flex flex-col items-center  shadow-[rgba(7,_65,_210,_0.1)_0px_9px_30px] gap-8">
