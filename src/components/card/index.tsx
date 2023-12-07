@@ -1,4 +1,3 @@
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import React, { useState, useEffect, ChangeEvent } from "react";
 import { useAccount, useNetwork, useWaitForTransaction } from "wagmi";
 import Image, { StaticImageData } from "next/image";
@@ -6,7 +5,6 @@ import {
   prepareSendTransaction,
   sendTransaction,
   fetchBalance,
-  waitForTransaction,
 } from "@wagmi/core";
 import { useAddRecentTransaction } from "@rainbow-me/rainbowkit";
 
@@ -111,7 +109,6 @@ function Card() {
     }));
   };
 
-  console.log(form);
 
   return (
     <div className="w-[550px] h-[390px] border rounded-3xl bg-[#ffffff] flex flex-col items-center  shadow-[rgba(7,_65,_210,_0.1)_0px_9px_30px] gap-8">

@@ -1,20 +1,16 @@
-import { ConnectButton } from "@rainbow-me/rainbowkit";
-import React, { useEffect, useState } from "react";
-import { useAccount, useNetwork, useWaitForTransaction } from "wagmi";
+import { useEffect, useState } from "react";
+import { useAccount, useNetwork } from "wagmi";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
-
 import { GoLinkExternal } from "react-icons/go";
 import Link from "next/link";
 
 interface Transaction {
   page: number;
-  currentPage: [
-    {
-      hash: string;
-      description: string;
-      status: string;
-    }
-  ];
+  currentPage: Array<{
+    hash: string;
+    description: string;
+    status: string;
+  }>;
 }
 
 function History() {
@@ -24,17 +20,27 @@ function History() {
   const { address } = useAccount();
   const { chain } = useNetwork();
 
-  // Retrieve data from local storage
+  // Use state to handle local storage data
+  const [storedData, setStoredData] = useState<Record<string, any> | null>(
+    null
+  );
 
-  const storedDataString = localStorage.getItem("rk-transactions") || "";
-  const storedData = JSON.parse(storedDataString);
+  useEffect(() => {
+    // Check if we are on the client side
+    if (typeof window !== "undefined") {
+      // Retrieve data from local storage
+      const storedDataString = localStorage.getItem("rk-transactions") || "";
+      const parsedStoredData = JSON.parse(storedDataString);
+      setStoredData(parsedStoredData);
+    }
+  }, []);
 
   // Check if address and chain are defined before accessing storedData
   const dataForAddressAndChain =
-    address && chain ? storedData?.[address]?.[chain.id] : undefined;
+    address && chain && storedData
+      ? storedData?.[address]?.[chain.id]
+      : undefined;
 
-  // console.log(`${address}:`);
-  // console.log(dataForAddressAndChain);
   useEffect(() => {
     if (dataForAddressAndChain) {
       const itemsPerPage = 10;
@@ -51,9 +57,7 @@ function History() {
 
       setTransactions(updatedTransactions);
     }
-  }, [address, chain]);
-
-  console.log(transactions.length >= 0);
+  }, [address, chain, dataForAddressAndChain]);
 
   return (
     <div className="w-full h-full flex justify-center items-start">
@@ -101,7 +105,7 @@ function History() {
         <div className="w-full flex items-center justify-end gap-4">
           <button
             onClick={() => {
-              currentIndex + 1 > 1 ? setCurrentIndex(currentIndex - 1) : "";
+              currentIndex + 1 > 1 && setCurrentIndex(currentIndex - 1);
             }}
           >
             <MdKeyboardArrowLeft />
@@ -117,7 +121,6 @@ function History() {
           </button>
         </div>
       </div>
-      .
     </div>
   );
 }
