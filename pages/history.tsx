@@ -62,6 +62,7 @@ function History() {
     }
   }, [address, chain, dataForAddressAndChain]);
 
+
   return (
     <div className="w-full h-full flex justify-center items-start">
       <div className="w-10/12 flex flex-col gap-5 mt-7 ">
@@ -95,7 +96,9 @@ function History() {
                     )}
                     <Link
                       target="_blank"
-                      href={`https://mumbai.polygonscan.com/tx/` + e.hash}
+                      href={
+                        chain?.blockExplorers?.etherscan?.url + `/tx/` + e.hash
+                      }
                     >
                       <GoLinkExternal />
                     </Link>
