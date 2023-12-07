@@ -27,10 +27,10 @@ function Sidebar() {
           </h1>
         </div>
         <div className="w-full text-black font-poppins flex flex-col items-center gap-3 font-medium  text-[14px]">
-          <Link href="/stream" className="w-full flex justify-center">
+          <Link href="/" className="w-full flex justify-center">
             <button
               className={`w-10/12  h-[50px] rounded-lg flex items-center gap-2  ${
-                router == "/stream" ? "bg-[#f0f0f0] border" : "bg-white  "
+                router == "/" ? "bg-[#f0f0f0] border" : "bg-white  "
               } `}
             >
               <CgArrowsExchangeV className="w-6 h-6 ml-3" />
